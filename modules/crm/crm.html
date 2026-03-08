@@ -1,0 +1,245 @@
+<!-- CRM Module Template -->
+<!-- This file contains the UI structure for Customer Relationship Management -->
+<!-- See crm.js for logic and event handlers -->
+
+<div class="content-view" data-section="crm">
+  <h1>Customer Relationship Management</h1>
+  <p>Manage customers, support tickets, and feedback.</p>
+
+  <!-- Stats Cards -->
+  <div class="dashboard-grid">
+    <div class="stat-card">
+      <div class="card-header">
+        <i class="fas fa-users card-icon"></i>
+        <span class="card-title">Total Customers</span>
+      </div>
+      <div class="card-value" id="totalCustomersValue">0</div>
+      <div class="card-detail">Active customers</div>
+    </div>
+    <div class="stat-card">
+      <div class="card-header">
+        <i class="fas fa-ticket-alt card-icon"></i>
+        <span class="card-title">Open Tickets</span>
+      </div>
+      <div class="card-value" id="openTicketsValue">0</div>
+      <div class="card-detail">Pending support</div>
+    </div>
+    <div class="stat-card">
+      <div class="card-header">
+        <i class="fas fa-star card-icon"></i>
+        <span class="card-title">Avg. Rating</span>
+      </div>
+      <div class="card-value" id="avgRatingValue">0.0</div>
+      <div class="card-detail">Customer satisfaction</div>
+    </div>
+    <div class="stat-card">
+      <div class="card-header">
+        <i class="fas fa-check card-icon"></i>
+        <span class="card-title">Resolution Rate</span>
+      </div>
+      <div class="card-value" id="resolutionRateValue">0%</div>
+      <div class="card-detail">Ticket resolution</div>
+    </div>
+  </div>
+
+  <!-- Module Tabs -->
+  <div style="margin-top: 20px; display: flex; gap: 8px; margin-bottom: 20px">
+    <button class="btn-primary" id="tabCustomers">Customers</button>
+    <button
+      class="btn-primary"
+      id="tabTickets"
+      style="
+        background: transparent;
+        color: var(--color-text-primary);
+        border: 1px solid var(--color-border);
+      "
+    >
+      Support Tickets
+    </button>
+    <button
+      class="btn-primary"
+      id="tabFeedback"
+      style="
+        background: transparent;
+        color: var(--color-text-primary);
+        border: 1px solid var(--color-border);
+      "
+    >
+      Feedback
+    </button>
+  </div>
+
+  <!-- Customers Tab -->
+  <div id="customersView" class="table-container">
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      "
+    >
+      <h3 style="color: white">Customers</h3>
+      <button class="btn-primary" id="btnAddCustomer">+ Add Customer</button>
+    </div>
+    <table class="content-table" id="customersTable">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Contact</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Tickets Tab -->
+  <div id="ticketsView" style="display: none" class="table-container">
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      "
+    >
+      <h3 style="color: white">Support Tickets</h3>
+      <button class="btn-primary" id="btnAddTicket">+ Create Ticket</button>
+    </div>
+    <table class="content-table" id="ticketsTable">
+      <thead>
+        <tr>
+          <th>Ticket #</th>
+          <th>Customer</th>
+          <th>Subject</th>
+          <th>Category</th>
+          <th>Status</th>
+          <th>Priority</th>
+          <th>Date</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Feedback Tab -->
+  <div id="feedbackView" style="display: none" class="table-container">
+    <h3 style="margin-bottom: 16px; color: white">Customer Feedback</h3>
+    <div id="feedbackContainer" style="display: grid; gap: 16px">
+      <!-- Feedback cards will be rendered here -->
+    </div>
+  </div>
+
+  <!-- Add Customer Modal -->
+  <div class="modal-backdrop" id="modalAddCustomer">
+    <div class="modal-content">
+      <button type="button" class="modal-close" data-close="modalAddCustomer">
+        &times;
+      </button>
+      <h3>Add New Customer</h3>
+      <form id="formAddCustomer">
+        <div class="form-group">
+          <label for="customerCode">Customer Code</label>
+          <input id="customerCode" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="customerName">Name</label>
+          <input id="customerName" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="customerType">Type</label>
+          <select id="customerType" class="form-control">
+            <option value="individual">Individual</option>
+            <option value="business">Business</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="customerContact">Contact Number</label>
+          <input id="customerContact" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="customerEmail">Email</label>
+          <input id="customerEmail" type="email" class="form-control" />
+        </div>
+        <div
+          style="
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 12px;
+          "
+        >
+          <button type="submit" class="btn-primary">Add Customer</button>
+          <button type="button" class="action-btn" id="cancelCustomerBtn">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Ticket Modal -->
+  <div class="modal-backdrop" id="modalAddTicket">
+    <div class="modal-content">
+      <button type="button" class="modal-close" data-close="modalAddTicket">
+        &times;
+      </button>
+      <h3>Create Support Ticket</h3>
+      <form id="formAddTicket">
+        <div class="form-group">
+          <label for="ticketCustomer">Customer</label>
+          <select id="ticketCustomer" class="form-control" required></select>
+        </div>
+        <div class="form-group">
+          <label for="ticketSubject">Subject</label>
+          <input id="ticketSubject" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="ticketCategory">Category</label>
+          <select id="ticketCategory" class="form-control">
+            <option value="billing">Billing</option>
+            <option value="technical">Technical Support</option>
+            <option value="general">General Inquiry</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="ticketDescription">Description</label>
+          <textarea
+            id="ticketDescription"
+            class="form-control"
+            rows="4"
+          ></textarea>
+        </div>
+        <div
+          style="
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 12px;
+          "
+        >
+          <button type="submit" class="btn-primary">Create Ticket</button>
+          <button type="button" class="action-btn" id="cancelTicketBtn">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- View Details Modal -->
+  <div class="modal-backdrop" id="modalViewDetails">
+    <div class="modal-content">
+      <button type="button" class="modal-close" data-close="modalViewDetails">
+        &times;
+      </button>
+      <div id="detailsContent"></div>
+    </div>
+  </div>
+</div>

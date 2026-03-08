@@ -1,0 +1,149 @@
+<!-- Storeroom Module Template -->
+<div class="content-view" data-section="storeroom">
+  <h1>Storeroom Management</h1>
+  <p>Manage inventory and procurement requests.</p>
+
+  <div class="dashboard-grid">
+    <div class="stat-card">
+      <div class="card-header">
+        <i class="fas fa-boxes card-icon"></i
+        ><span class="card-title">Total Items</span>
+      </div>
+      <div class="card-value" id="totalItemsValue">0</div>
+      <div class="card-detail">In inventory</div>
+    </div>
+    <div class="stat-card">
+      <div class="card-header">
+        <i class="fas fa-exclamation-triangle card-icon"></i
+        ><span class="card-title">Low Stock</span>
+      </div>
+      <div class="card-value" id="lowStockValue">0</div>
+      <div class="card-detail">Items to reorder</div>
+    </div>
+    <div class="stat-card">
+      <div class="card-header">
+        <i class="fas fa-shopping-cart card-icon"></i
+        ><span class="card-title">Pending Requests</span>
+      </div>
+      <div class="card-value" id="pendingRequestsValue">0</div>
+      <div class="card-detail">Procurement pending</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 20px; display: flex; gap: 8px; margin-bottom: 20px">
+    <button class="btn-primary" id="tabInventory">Inventory</button>
+    <button
+      class="btn-primary"
+      id="tabProcurement"
+      style="
+        background: transparent;
+        color: var(--color-text-primary);
+        border: 1px solid var(--color-border);
+      "
+    >
+      Procurement
+    </button>
+  </div>
+
+  <!-- Inventory Tab -->
+  <div id="inventoryView" class="table-container">
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      "
+    >
+      <h3 style="color: white">Inventory</h3>
+      <button class="btn-primary" id="btnAddAsset">+ Add Item</button>
+    </div>
+    <table class="content-table" id="inventoryTable">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Quantity</th>
+          <th>Unit</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Procurement Tab -->
+  <div id="procurementView" style="display: none" class="table-container">
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      "
+    >
+      <h3 style="color: white">Procurement Requests</h3>
+      <button class="btn-primary" id="btnAddProcurement">+ New Request</button>
+    </div>
+    <table class="content-table" id="procurementTable">
+      <thead>
+        <tr>
+          <th>Request #</th>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Requested Date</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Modal for Add Item -->
+  <div class="modal-backdrop" id="modalAddAsset">
+    <div class="modal-content">
+      <button type="button" class="modal-close" data-close="modalAddAsset">
+        &times;
+      </button>
+      <h3>Add Inventory Item</h3>
+      <form id="formAddAsset">
+        <div class="form-group">
+          <label>Item Code</label><input class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label>Item Name</label><input class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label>Category</label
+          ><select class="form-control">
+            <option>Tools</option>
+            <option>Parts</option>
+            <option>Supplies</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Quantity</label
+          ><input type="number" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label>Unit</label
+          ><input class="form-control" placeholder="pcs, kg, etc." />
+        </div>
+        <div
+          style="
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 12px;
+          "
+        >
+          <button type="submit" class="btn-primary">Add Item</button>
+          <button type="button" class="action-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

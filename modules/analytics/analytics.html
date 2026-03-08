@@ -1,0 +1,131 @@
+<!-- Analytics Module Template -->
+<div class="content-view" data-section="analytics">
+  <h1>Analytics & Reports</h1>
+  <p>Performance metrics, trends, and business intelligence.</p>
+
+  <div class="dashboard-grid">
+    <div class="stat-card">
+      <div class="card-header">
+        <i class="fas fa-money-bill card-icon"></i
+        ><span class="card-title">Monthly Revenue</span>
+      </div>
+      <div class="card-value" id="monthlyRevenueValue">₱0</div>
+      <div class="card-detail">Current month</div>
+    </div>
+    <div class="stat-card">
+      <div class="card-header">
+        <i class="fas fa-taxi card-icon"></i
+        ><span class="card-title">Fleet Utilization</span>
+      </div>
+      <div class="card-value" id="fleetUtilValue">0%</div>
+      <div class="card-detail">Vehicles in use</div>
+    </div>
+    <div class="stat-card">
+      <div class="card-header">
+        <i class="fas fa-check card-icon"></i
+        ><span class="card-title">Trip Completion Rate</span>
+      </div>
+      <div class="card-value" id="completionRateValue">0%</div>
+      <div class="card-detail">Completed trips</div>
+    </div>
+    <div class="stat-card">
+      <div class="card-header">
+        <i class="fas fa-gas-pump card-icon"></i
+        ><span class="card-title">Fuel Efficiency</span>
+      </div>
+      <div class="card-value" id="fuelEfficiencyValue">0 km/L</div>
+      <div class="card-detail">Average consumption</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 20px; display: flex; gap: 8px; margin-bottom: 20px">
+    <button class="btn-primary" id="tabFinancial">Financial</button>
+    <button
+      class="btn-primary"
+      id="tabOperational"
+      style="
+        background: transparent;
+        color: var(--color-text-primary);
+        border: 1px solid var(--color-border);
+      "
+    >
+      Operational
+    </button>
+    <button
+      class="btn-primary"
+      id="tabSafety"
+      style="
+        background: transparent;
+        color: var(--color-text-primary);
+        border: 1px solid var(--color-border);
+      "
+    >
+      Safety & Risk
+    </button>
+  </div>
+
+  <!-- Financial View -->
+  <div id="financialView" class="table-container">
+    <h3 style="margin-bottom: 16px; color: white">Financial Overview</h3>
+    <div
+      style="
+        height: 300px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-around;
+        gap: 16px;
+      "
+    >
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+        "
+      >
+        <div
+          style="
+            width: 40px;
+            height: 180px;
+            background: var(--color-neon-accent);
+            border-radius: 4px;
+          "
+        ></div>
+        <span>Revenue</span>
+      </div>
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+        "
+      >
+        <div
+          style="
+            width: 40px;
+            height: 120px;
+            background: #e74c3c;
+            border-radius: 4px;
+          "
+        ></div>
+        <span>Expenses</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Operational View -->
+  <div id="operationalView" style="display: none" class="table-container">
+    <h3 style="margin-bottom: 16px; color: white">Operational Metrics</h3>
+    <p style="color: var(--color-text-secondary)">Fleet and trip metrics</p>
+  </div>
+
+  <!-- Safety View -->
+  <div id="safetyView" style="display: none" class="table-container">
+    <h3 style="margin-bottom: 16px; color: white">Safety & Risk Assessment</h3>
+    <p style="color: var(--color-text-secondary)">
+      Safety metrics and incident tracking
+    </p>
+  </div>
+</div>

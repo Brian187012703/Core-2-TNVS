@@ -1,0 +1,93 @@
+<!-- Settings Module Template -->
+<div class="content-view" data-section="settings">
+  <h1>Settings</h1>
+  <p>Application preferences and configuration.</p>
+
+  <div class="settings-container" style="max-width: 600px; margin-top: 24px">
+    <div class="settings-section">
+      <h3 style="color: white; margin-bottom: 16px">Theme Preferences</h3>
+      <div
+        style="
+          padding: 16px;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 8px;
+        "
+      >
+        <label
+          style="
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            margin-bottom: 12px;
+          "
+        >
+          <input type="radio" name="theme" value="dark" /> Dark Mode
+        </label>
+        <label
+          style="
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            margin-bottom: 12px;
+          "
+        >
+          <input type="radio" name="theme" value="light" /> Light Mode
+        </label>
+        <label
+          style="display: flex; align-items: center; gap: 12px; cursor: pointer"
+        >
+          <input type="radio" name="theme" value="system" /> System Default
+        </label>
+      </div>
+    </div>
+
+    <div class="settings-section" style="margin-top: 24px">
+      <h3 style="color: white; margin-bottom: 16px">Notifications</h3>
+      <div
+        style="
+          padding: 16px;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 8px;
+        "
+      >
+        <label
+          style="
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            margin-bottom: 12px;
+          "
+        >
+          <input type="checkbox" checked /> Email Notifications
+        </label>
+        <label
+          style="
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            margin-bottom: 12px;
+          "
+        >
+          <input type="checkbox" checked /> Dashboard Alerts
+        </label>
+        <label
+          style="display: flex; align-items: center; gap: 12px; cursor: pointer"
+        >
+          <input type="checkbox" /> Weekly Reports
+        </label>
+      </div>
+    </div>
+
+    <div class="settings-section" style="margin-top: 24px">
+      <h3 style="color: white; margin-bottom: 16px">Account</h3>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap">
+        <button class="btn-primary">Change Password</button>
+        <button class="action-btn">Logout</button>
+      </div>
+    </div>
+  </div>
+</div>

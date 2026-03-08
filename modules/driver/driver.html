@@ -1,0 +1,79 @@
+<!-- Driver Module Template -->
+<div class="content-view" data-section="driver">
+  <h1>Driver Information & Management</h1>
+  <p>Manage drivers and performance tracking.</p>
+
+  <div class="dashboard-grid">
+    <div class="stat-card">
+      <div class="card-header">
+        <i class="fas fa-id-card card-icon"></i
+        ><span class="card-title">Active Drivers</span>
+      </div>
+      <div class="card-value" id="activeDriversValue">0</div>
+      <div class="card-detail">On roster</div>
+    </div>
+    <div class="stat-card">
+      <div class="card-header">
+        <i class="fas fa-star card-icon"></i
+        ><span class="card-title">Avg. Rating</span>
+      </div>
+      <div class="card-value" id="driverAvgRatingValue">0.0</div>
+      <div class="card-detail">Performance rating</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 20px; display: flex; gap: 8px; margin-bottom: 20px">
+    <button class="btn-primary" id="tabDrivers">Drivers</button>
+    <button
+      class="btn-primary"
+      id="tabPerformance"
+      style="
+        background: transparent;
+        color: var(--color-text-primary);
+        border: 1px solid var(--color-border);
+      "
+    >
+      Performance
+    </button>
+  </div>
+
+  <!-- Drivers Tab -->
+  <div id="driversView" class="table-container">
+    <div
+      style="display: flex; justify-content: space-between; margin-bottom: 16px"
+    >
+      <h3 style="color: white">Drivers</h3>
+      <button class="btn-primary" id="btnAddDriver">+ Add Driver</button>
+    </div>
+    <table class="content-table" id="driversTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>License</th>
+          <th>Contact</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Performance Tab -->
+  <div id="performanceView" style="display: none" class="table-container">
+    <h3 style="margin-bottom: 16px; color: white">Driver Performance</h3>
+    <table class="content-table" id="performanceTable">
+      <thead>
+        <tr>
+          <th>Driver</th>
+          <th>Trips</th>
+          <th>Rating</th>
+          <th>Safety Score</th>
+          <th>On-Time %</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,197 @@
+<div class="content-view" data-section="fuel">
+  <h1>Fuel Management</h1>
+  <p>Track petrol/diesel stock, purchases and consumption.</p>
+
+  <div class="dashboard-grid">
+    <div class="stat-card">
+      <div class="card-header">
+        <i class="fas fa-oil-can card-icon"></i>
+        <span class="card-title">Petrol Stock</span>
+      </div>
+      <div class="card-value" id="petrolStockValue">0 L</div>
+      <div class="card-detail">Available in storage</div>
+    </div>
+    <div class="stat-card">
+      <div class="card-header">
+        <i class="fas fa-gas-pump card-icon"></i>
+        <span class="card-title">Diesel Stock</span>
+      </div>
+      <div class="card-value" id="dieselStockValue">0 L</div>
+      <div class="card-detail">Available in storage</div>
+    </div>
+    <div class="stat-card">
+      <div class="card-header">
+        <i class="fas fa-calendar-check card-icon"></i>
+        <span class="card-title">This Month's Purchases</span>
+      </div>
+      <div class="card-value" id="monthPurchaseValue">0 L</div>
+      <div class="card-detail">Total liters purchased this month</div>
+    </div>
+    <div class="stat-card">
+      <div class="card-header">
+        <i class="fas fa-chart-line card-icon"></i>
+        <span class="card-title">Avg. Consumption Daily</span>
+      </div>
+      <div class="card-value" id="avgDailyValue">0 L/day</div>
+      <div class="card-detail">Based on consumption records</div>
+    </div>
+  </div>
+
+  <div
+    style="
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    "
+  >
+    <div class="segmented-control" style="display: flex; gap: 8px">
+      <button class="btn-primary" id="tabPurchases">Purchases</button>
+      <button
+        class="btn-primary"
+        id="tabConsumption"
+        style="
+          background: transparent;
+          color: var(--color-text-primary);
+          border: 1px solid var(--color-border);
+        "
+      >
+        Consumption
+      </button>
+    </div>
+    <button class="btn-primary" id="btnAddPurchase">+ Record Purchase</button>
+  </div>
+
+  <div class="table-container" id="purchasesView" style="margin-top: 14px">
+    <h3 style="margin-bottom: 12px; color: white">Purchases</h3>
+    <table class="content-table" id="purchasesTable">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Invoice #</th>
+          <th>Supplier</th>
+          <th>Fuel Type</th>
+          <th>Quantity (L)</th>
+          <th>Unit Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div
+    class="table-container"
+    id="consumptionView"
+    style="display: none; margin-top: 14px"
+  >
+    <h3 style="margin-bottom: 12px; color: white">Consumption Tracking</h3>
+    <p style="color: var(--color-text-secondary); margin-bottom: 10px">
+      Connected to vehicle trips and GPS distance tracking.
+    </p>
+    <table class="content-table" id="consumptionTable">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Vehicle</th>
+          <th>Distance (km)</th>
+          <th>Fuel Consumed (L)</th>
+          <th>Fuel Type</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="modal-backdrop" id="modalRecordPurchase">
+    <div class="modal-content">
+      <button
+        type="button"
+        class="modal-close"
+        data-close="modalRecordPurchase"
+      >
+        &times;
+      </button>
+      <h3>Recording Fuel Purchase</h3>
+      <form id="formRecordPurchase">
+        <div class="form-group">
+          <label for="invoiceNumber">Invoice Number</label>
+          <input id="invoiceNumber" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="purchaseDate">Purchase Date</label>
+          <input id="purchaseDate" type="date" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="supplierName">Supplier Name</label>
+          <input id="supplierName" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="vehicleId">Vehicle ID</label>
+          <input
+            id="vehicleId"
+            class="form-control"
+            placeholder="e.g., 001"
+            value="001"
+          />
+        </div>
+        <div class="form-group">
+          <label for="fuelTypeSelect">Fuel Type</label>
+          <select id="fuelTypeSelect" class="form-control">
+            <option value="petrol">Petrol</option>
+            <option value="diesel">Diesel</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="quantityLiters">Quantity (L)</label>
+          <input
+            id="quantityLiters"
+            type="number"
+            min="0"
+            step="0.01"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="unitPrice">Unit Price</label>
+          <input
+            id="unitPrice"
+            type="number"
+            min="0"
+            step="0.01"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="totalAmount">Total Amount</label>
+          <input
+            id="totalAmount"
+            type="number"
+            min="0"
+            step="0.01"
+            class="form-control"
+            readonly
+          />
+        </div>
+        <div
+          style="
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 12px;
+          "
+        >
+          <button type="submit" class="btn-primary" id="recordPurchaseBtn">
+            Record Purchase
+          </button>
+          <button type="button" class="action-btn" id="cancelPurchaseBtn">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

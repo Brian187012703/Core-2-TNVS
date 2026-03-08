@@ -1,1 +1,33 @@
+# Core Services 2 (TNVS) PHP Deployment
 
+This project has been converted from static HTML/CSS/JS to PHP so that
+it can run under a PHP engine (e.g. XAMPP). The conversion includes:
+
+- All frontend `.html` pages renamed to `.php` and wrapped with PHP tags.
+- CSS and JavaScript assets converted to PHP scripts that send the correct
+  `Content-Type` header.
+- Links and script references updated to point at the new `.php` filenames.
+- Markdown and text documentation files are now `.php` scripts that serve
+  plain text.
+
+## Getting started with XAMPP
+
+1. Copy the entire project directory into your XAMPP `htdocs` folder, for
+   example `C:\xampp\htdocs\BPM TNVS`.
+2. Start Apache and MySQL via the XAMPP control panel.
+3. Open a browser and visit `http://localhost/<folder>/index.php` to view the
+   login page.
+4. To create the database, visit `http://localhost/<folder>/db.php` or import
+   the supplied `database.sql` schema using phpMyAdmin (accessible at
+   `http://localhost/phpmyadmin`).
+5. Adjust `db.php` credentials if you have a password on the `root` user.
+
+## Notes
+
+- Server-side logic can now be added inside `<?php ... ?>` blocks in any file.
+- Static assets are still cached normally by browsers; their PHP wrappers just
+  send headers and echo the original content.
+- If you maintain the project in version control, consider excluding the
+  `database.sql` file or renaming back to `.md` for documentation.
+
+Happy coding!
