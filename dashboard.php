@@ -298,6 +298,59 @@
           </div>
         </div>
       </div>
+
+      <!-- DRIVER INFO SECTION -->
+      <div id="driver-section" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h1>👤 Driver Information</h1>
+          <div style="display: flex; gap: 10px;">
+            <button id="refreshDrivers" class="quick-action-btn" style="background: #1976d2; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer;">
+              <i class="fas fa-sync"></i> Refresh
+            </button>
+            <button id="sendToLaptop2" class="quick-action-btn" style="background: #00e676; color: #000; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+              <i class="fas fa-send"></i> Send to Laptop 2
+            </button>
+          </div>
+        </div>
+
+        <div style="background: #1e1e1e; border-radius: 12px; padding: 20px; color: #fff;">
+          <div id="driverStatus" style="margin-bottom: 20px; display: flex; gap: 20px;">
+            <div style="flex: 1; background: #2a2a2a; padding: 15px; border-radius: 8px; border-left: 4px solid #00e676;">
+              <div style="font-size: 12px; color: #999; text-transform: uppercase;">Total Drivers</div>
+              <div style="font-size: 28px; font-weight: bold; color: #00e676;" id="totalDriversCount">0</div>
+            </div>
+            <div style="flex: 1; background: #2a2a2a; padding: 15px; border-radius: 8px; border-left: 4px solid #1976d2;">
+              <div style="font-size: 12px; color: #999; text-transform: uppercase;">Active Drivers</div>
+              <div style="font-size: 28px; font-weight: bold; color: #1976d2;" id="activeDriversCount">0</div>
+            </div>
+            <div style="flex: 1; background: #2a2a2a; padding: 15px; border-radius: 8px; border-left: 4px solid #ff9800;">
+              <div style="font-size: 12px; color: #999; text-transform: uppercase;">On Trip</div>
+              <div style="font-size: 28px; font-weight: bold; color: #ff9800;" id="onTripDriversCount">0</div>
+            </div>
+            <div style="flex: 1; background: #2a2a2a; padding: 15px; border-radius: 8px; border-left: 4px solid #f44336;">
+              <div style="font-size: 12px; color: #999; text-transform: uppercase;">Suspended</div>
+              <div style="font-size: 28px; font-weight: bold; color: #f44336;" id="suspendedDriversCount">0</div>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <div style="display: flex; gap: 15px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #3a3a3a; font-weight: bold; color: #00e676; font-size: 12px; text-transform: uppercase;">
+              <span style="flex: 0.3;">ID</span>
+              <span style="flex: 1.2;">NAME</span>
+              <span style="flex: 1;">LICENSE</span>
+              <span style="flex: 1;">CONTACT</span>
+              <span style="flex: 0.8;">STATUS</span>
+              <span style="flex: 0.8;">ACTION</span>
+            </div>
+            <div id="driversListContainer" style="max-height: 500px; overflow-y: auto;">
+              <div style="text-align: center; color: #999; padding: 30px;">Loading drivers...</div>
+            </div>
+          </div>
+
+          <div id="sendStatus" style="display: none; padding: 15px; border-radius: 8px; margin-top: 15px; font-weight: bold;">
+          </div>
+        </div>
+      </div>
     </main>
 
     <script src="js/settings.php"></script>
@@ -306,5 +359,160 @@
     <script src="modules/module-loader.php"></script>
     <script src="script.php"></script>
     <script src="js/dashboard-analytics.php"></script>
+
+    <!-- DRIVER SYSTEM INTEGRATION SCRIPT -->
+    <script>
+      // Configuration
+      const LAPTOP2_IP = '192.168.1.5'; // Change to your Laptop 2 IP
+      const LAPTOP1_API = 'api_send_drivers.php';
+
+      // Load drivers when Driver Info section is clicked
+      document.addEventListener('DOMContentLoaded', function() {
+        const driverLink = document.querySelector('[data-section="driver"]');
+        if (driverLink) {
+          driverLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            loadDriversList();
+          });
+        }
+
+        // Refresh button
+        const refreshBtn = document.getElementById('refreshDrivers');
+        if (refreshBtn) {
+          refreshBtn.addEventListener('click', loadDriversList);
+        }
+
+        // Send to Laptop 2 button
+        const sendBtn = document.getElementById('sendToLaptop2');
+        if (sendBtn) {
+          sendBtn.addEventListener('click', sendDriversToLaptop2);
+        }
+      });
+
+      // Load drivers from local database
+      async function loadDriversList() {
+        try {
+          // Hide other sections
+          const defaultView = document.getElementById('default-view');
+          const driverSection = document.getElementById('driver-section');
+          if (defaultView) defaultView.style.display = 'none';
+          if (driverSection) driverSection.style.display = 'block';
+
+          // Fetch drivers from API
+          const response = await fetch(LAPTOP1_API + '?action=get_drivers');
+          const data = await response.json();
+
+          if (!data.success) {
+            document.getElementById('driversListContainer').innerHTML = 
+              '<div style="text-align: center; color: #f44336; padding: 20px;">Error: ' + data.message + '</div>';
+            return;
+          }
+
+          const drivers = data.drivers || [];
+
+          // Update stats
+          document.getElementById('totalDriversCount').textContent = drivers.length;
+          document.getElementById('activeDriversCount').textContent = drivers.filter(d => d.status === 'active').length;
+          document.getElementById('onTripDriversCount').textContent = drivers.filter(d => d.status === 'on_trip').length;
+          document.getElementById('suspendedDriversCount').textContent = drivers.filter(d => d.status === 'suspended').length;
+
+          // Build drivers list
+          if (drivers.length === 0) {
+            document.getElementById('driversListContainer').innerHTML = 
+              '<div style="text-align: center; color: #999; padding: 30px;">No drivers available</div>';
+            return;
+          }
+
+          let html = '';
+          drivers.forEach(driver => {
+            const statusColor = driver.status === 'active' ? '#00e676' : 
+                               driver.status === 'on_trip' ? '#1976d2' : '#f44336';
+            const statusText = driver.status === 'active' ? '✓ Active' :
+                              driver.status === 'on_trip' ? '🚗 On Trip' : '⛔ Suspended';
+
+            html += `
+              <div style="display: flex; gap: 15px; padding: 12px; border-bottom: 1px solid #2a2a2a; align-items: center; font-size: 13px;">
+                <span style="flex: 0.3; color: #909090;">${driver.id}</span>
+                <span style="flex: 1.2; color: #fff; font-weight: 500;">${driver.name}</span>
+                <span style="flex: 1; color: #909090;">${driver.license_number}</span>
+                <span style="flex: 1; color: #909090;">📞 ${driver.contact_number}</span>
+                <span style="flex: 0.8;">
+                  <span style="background: ${statusColor}20; color: ${statusColor}; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">
+                    ${statusText}
+                  </span>
+                </span>
+                <span style="flex: 0.8;">
+                  <button onclick="viewDriver(${driver.id})" style="background: #1976d2; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px;">View</button>
+                </span>
+              </div>
+            `;
+          });
+
+          document.getElementById('driversListContainer').innerHTML = html;
+
+        } catch (error) {
+          console.error('Error loading drivers:', error);
+          document.getElementById('driversListContainer').innerHTML = 
+            '<div style="text-align: center; color: #f44336; padding: 20px;">Error: ' + error.message + '</div>';
+        }
+      }
+
+      // Send drivers to Laptop 2
+      async function sendDriversToLaptop2() {
+        const statusDiv = document.getElementById('sendStatus');
+        
+        try {
+          statusDiv.style.display = 'block';
+          statusDiv.textContent = '📤 Fetching drivers...';
+          statusDiv.style.background = '#1976d2';
+          statusDiv.style.color = '#fff';
+
+          // Get drivers
+          const response = await fetch(LAPTOP1_API + '?action=get_drivers');
+          const data = await response.json();
+
+          if (!data.success) {
+            throw new Error(data.message);
+          }
+
+          const drivers = data.drivers;
+
+          // Send to Laptop 2
+          statusDiv.textContent = '📡 Sending to Laptop 2...';
+
+          const sendResponse = await fetch(
+            'http://' + LAPTOP2_IP + '/driver_profile.php?action=receive_drivers',
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(drivers)
+            }
+          );
+
+          const sendResult = await sendResponse.json();
+
+          if (sendResult.success) {
+            statusDiv.textContent = '✅ Success! ' + sendResult.message;
+            statusDiv.style.background = '#00e67620';
+            statusDiv.style.color = '#00e676';
+            console.log('Drivers sent successfully:', sendResult);
+          } else {
+            throw new Error(sendResult.message);
+          }
+
+        } catch (error) {
+          console.error('Send error:', error);
+          statusDiv.textContent = '❌ Error: ' + error.message;
+          statusDiv.style.background = '#f4433620';
+          statusDiv.style.color = '#f44336';
+        }
+      }
+
+      // View driver details
+      function viewDriver(driverId) {
+        alert('View details for driver ID: ' + driverId);
+        // Can be extended to show a modal with full details
+      }
+    </script>
   </body>
 </html>
